@@ -1,0 +1,199 @@
+:root {
+    --color-primary: #269fe6;
+    --color-primary-hover: #2086c2;
+    --color-primary-dark: #3c4593;
+    --color-primary-dark-header:#0c135f;
+    --color-is-past-deadline-dark:#331414;
+    --color-is-past-deadline:#3a1515;
+    --color-primary-dark-hover: #212336;
+    --color-primary-light: #d4ecfa;
+    --color-primary-light-hover: #bdd8e7;
+    --color-white: #dfdfdf;
+    --color-black: #000;
+    --color-dark-text: #444;
+    --color-info-light: #cce5ff;
+    --color-debug-light: #cce5ff;
+    --color-success-light: #d4edda;
+    --color-alert-light: #fff3cd;
+    --color-warning-light: #fff3cd;
+    --color-error-light: #f8d7da;
+    --color-info-dark: #4d86c4;
+    --color-debug-dark: #4d86c4;
+    --color-success-dark: #4a9c5d;
+    --color-alert-dark: #927f40;
+    --color-warning-dark: #b39c53;
+    --color-error-dark: #da525d;
+    --color-gray-0: #f9f9f9;
+    --color-gray-1: #e0e0e0;
+    --color-gray-2: #c7c7c7;
+    --color-gray-3: #aeaeae;
+    --color-gray-4: #959595;
+    --color-gray-5: #7d7d7d;
+    --color-gray-6: #646464;
+    --color-gray-7: #4b4b4b;
+    --color-gray-8: #323232;
+    --color-gray-9: #191919;
+    --search-focus-color:#E8F0FE;
+    --font-primary: sans-serif;
+    --font-headings: sans-serif;
+    --spacing-gutter-small: 2rem;
+    --spacing-gutter-medium: 3rem;
+    --spacing-gutter-large: 4rem;
+}
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html{
+    font-size: 62.5%;
+    color: var(--color-white);
+}
+.border{
+    border-radius: 1rem;
+}
+body{
+    font-size: 1.6rem;
+    font-family: var(--font-primary);
+    background-color: var(--color-primary-dark);
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: var(--font-headings);
+}
+.container{
+    max-width: 144rem;
+    margin: 0 auto;
+    padding: var(--spacing-gutter-medium);
+}
+/* header */
+.header-container{
+    background: var(--color-primary-dark-header);
+}
+.header{
+    display: flex;
+    align-items: center;
+    color: var(--color-white);
+}
+.header .logo{
+    color: var(--color-white);
+    text-decoration: none;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .5rem;
+    font-size: 2.4rem;
+    margin: 0 auto;
+}
+/*main*/
+.main{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+}
+.main .main_menssage{
+    text-align: center;
+    color: var(--color-white);
+    font-size: 2.4rem;
+}
+
+ /* Messages */
+.messages-container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: calc(var(--spacing-gutter-medium) / 2);
+    width: fit-content;
+    position: fixed;
+    top: 80px;
+    right: 0;
+  }
+.message {
+    padding: 0;
+    padding-left: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-dark-text);
+    background: var(--color-gray-2);
+    color: var(--color-dark-text);
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.message-error {
+    border: 1px solid var(--color-error-dark);
+    background: var(--color-error-light);
+    color: var(--color-error-dark);
+}
+.message-success {
+    border: 1px solid var(--color-success-dark);
+    background: var(--color-success-light);
+    color: var(--color-success-dark);
+}
+.message-warning {
+    border: 1px solid var(--color-warning-dark);
+    background: var(--color-warning-light);
+    color: var(--color-warning-dark);
+}
+.message-alert {
+    border: 1px solid var(--color-alert-dark);
+    background: var(--color-alert-light);
+    color: var(--color-alert-dark);
+}
+.message-info {
+    border: 1px solid var(--color-info-dark);
+    background: var(--color-info-light);
+    color: var(--color-info-dark);
+}
+.message-debug {
+    border: 1px solid var(--color-debug-dark);
+    background: var(--color-debug-light);
+    color: var(--color-debug-dark);
+}
+/* footer */
+.footer-container{
+    background: var(--color-primary-dark-header);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+.social-links{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.social-links .social-icon{
+    color: var(--color-gray-3);
+    text-decoration: none;
+    transition: all .3s ease;
+    font-size: 1.8rem;
+}
+.social-icon:hover{
+    transform: scale(1.1);
+}
+/* quiz */
+
+@media  screen and (max-width:1000px) {
+    .header .logo{
+        font-size: 1.8rem;
+    }
+    .main .want-play{
+        font-size: 1.8rem;
+    }
+    footer .creator{
+        font-size: 1.1rem;
+    }
+    .social-links .social-icon{
+        font-size: 1.3rem;
+    }
+    .footer{
+        gap: .5rem;
+    }
+}

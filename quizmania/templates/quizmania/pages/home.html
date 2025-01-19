@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "global/css/style.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/fontawesome.min.css" integrity="sha512-lauN4D/0AgFUGvmMR+knQnbOADyD/XuQ8VF18I8Ll0+TLvsujshyxvU+uzogmQbSq6qJd5jnUdYtK8ShxXMlSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/brands.min.css" integrity="sha512-7rXIvd/xj1FnI2zKQjjXzDFxC4twqBByp8yxOgEQJs4C/aNzNyoQsOO7VxH0RgYNhbAYLJLwzqslaP50KTTHIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/solid.min.css" integrity="sha512-bdqdas3Yr82pkTg5i0X1gcAT3tBXz/8H3J1ec7RyEKAvr/YiSCJNV2dnkukmL8CicjKb9rxmd+ILK8Kg2o2wvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>QuizMania</title>
+</head>
+<body>
+    
+    <header class="header-container">
+        <div class="header container">
+            <div class="logo">
+                <h2>
+                    <a href="{% url 'quizmania:home' %}" class="logo">
+                        <span class="logo-text">QuizMania</span>
+                        <i class="fa-solid fa-trophy"></i>
+                    </a>
+                </h2>
+            </div>
+        </div>
+    </header>
+    <main class="main-container">
+        <div class="main container">
+            <h2 class="want-play">O que deseja jogar?</h2>
+        <div class="quizes-container">
+            <div class="quizes">
+                <div class="quiz-single">
+                    <h3 class="quiz-title">Sobrevivência</h3>
+                    <p class="quiz-category">Categoria: <span>Mitologia</span></p>
+                    <p class="quiz-description">
+                        Você tem 3 vidas, veja o quanto aguenta...
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+    <footer class="footer-container">
+        <div class="footer container">
+          <p class="creator">&copy; 2025 Davi Dolabella. Todos os direitos reservados.</p>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" class="social-icon">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-icon">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+    </footer>
+</body>
+</html>
