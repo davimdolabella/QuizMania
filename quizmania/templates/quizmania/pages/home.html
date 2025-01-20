@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/fontawesome.min.css" integrity="sha512-lauN4D/0AgFUGvmMR+knQnbOADyD/XuQ8VF18I8Ll0+TLvsujshyxvU+uzogmQbSq6qJd5jnUdYtK8ShxXMlSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/brands.min.css" integrity="sha512-7rXIvd/xj1FnI2zKQjjXzDFxC4twqBByp8yxOgEQJs4C/aNzNyoQsOO7VxH0RgYNhbAYLJLwzqslaP50KTTHIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/solid.min.css" integrity="sha512-bdqdas3Yr82pkTg5i0X1gcAT3tBXz/8H3J1ec7RyEKAvr/YiSCJNV2dnkukmL8CicjKb9rxmd+ILK8Kg2o2wvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{% static "global/js/Slick/slick.js" %}">
+    <link rel="stylesheet" href="{% static "global/js/Slick/slick.css" %}">
+    
     <title>QuizMania</title>
 </head>
 <body>
@@ -29,8 +30,7 @@
         <div class="main container">
             <h2 class="want-play">O que deseja jogar?</h2>
             <div class="quizes-container">
-                <button class="scroll-left scroll-button"><i class="fa-solid fa-caret-right"></i></button>
-                <button class="scroll-right scroll-button"><i class="fa-solid fa-caret-right"></i></button>
+                
                 <div class="quizes">
                     
                     {% for i in range %}
@@ -55,7 +55,7 @@
         <div class="footer container">
           <p class="creator">&copy; 2025 Davi Dolabella. Todos os direitos reservados.</p>
           <div class="social-links">
-            <a href="https://facebook.com" target="_blank" class="social-icon">
+            <a href="https://github.com/davimdolabella" target="_blank" class="social-icon">
               <i class="fab fa-github"></i>
             </a>
             <a href="https://instagram.com" target="_blank" class="social-icon">
@@ -66,7 +66,7 @@
     </footer>
     <script src="{% static "global/js/JQuery/jquery-3.7.1.js" %}"></script>
     <script src="{% static "global/js/JQuery/jquery-migrate-3.5.2.js" %}"></script>
-    <script src="{% static "global/js/Slick/slick.js" %}"></script>
+    <script src="{% static "global/js/Slick/slick.min.js" %}"></script>
     <script src="{%  static "global/js/scroll_quizes_slider.js" %}"></script>
 
 </body>

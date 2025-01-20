@@ -2,5 +2,5 @@ from django.shortcuts import render
 
 def home(request):
     return render(request, 'quizmania/pages/home.html',{
-        'range':range(10),
+        'range':range(6),
     })
