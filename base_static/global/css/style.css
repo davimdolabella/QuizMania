@@ -48,6 +48,7 @@
 html{
     font-size: 62.5%;
     color: var(--color-white);
+    
 }
 .border{
     border-radius: 1rem;
@@ -56,6 +57,7 @@ body{
     font-size: 1.6rem;
     font-family: var(--font-primary);
     background-color: var(--color-primary-dark);
+    
 }
 h1,h2,h3,h4,h5,h6{
     font-family: var(--font-headings);
@@ -90,8 +92,10 @@ h1,h2,h3,h4,h5,h6{
     flex-wrap: nowrap;
     justify-content: center;
     width: 100%;
+    gap: 5rem;
 }
-.main .main_menssage{
+.main .want-play{
+    margin-top: 1rem;
     text-align: center;
     color: var(--color-white);
     font-size: 2.4rem;
@@ -153,15 +157,15 @@ h1,h2,h3,h4,h5,h6{
 /* footer */
 .footer-container{
     background: var(--color-primary-dark-header);
-    position: absolute;
-    bottom: 0;
     width: 100%;
+    margin-top: auto;
 }
 .footer{
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
+
 }
 .social-links{
     display: flex;
@@ -180,6 +184,49 @@ h1,h2,h3,h4,h5,h6{
 }
 /* quiz */
 
+.quizes{
+    background-color: red;
+    overflow-x: hidden;
+    display: flex;
+    height: fit-content;
+    padding: 1rem 0;
+    gap: 2rem;
+}
+.quiz-single{
+    background-color: blue;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 1.5rem;
+    border-radius: 15px;
+    min-width: 20rem;
+    max-width: 30rem;
+    gap: 1.5rem;
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+}
+.quiz-single:hover{
+    transform: scale(1.02);
+}
+.single-img{
+    width: 100%;
+    border-radius: 15px;
+}
+
+.quiz-title{
+    font-size: 2.3rem;
+    text-align: center;
+}
+.quiz-content p{
+    color: var(--color-white);
+    margin-bottom: 1rem;
+    font-weight: bold;
+    word-wrap: break-word;
+}
+.quiz-description{
+    overflow: hidden;
+}
 @media  screen and (max-width:1000px) {
     .header .logo{
         font-size: 1.8rem;
@@ -195,5 +242,12 @@ h1,h2,h3,h4,h5,h6{
     }
     .footer{
         gap: .5rem;
+    }
+    .quiz-content p{
+        font-size: 1.5rem;
+    }
+    .quiz-title{
+        font-size: 1.7rem;
+        text-align: center;
     }
 }
