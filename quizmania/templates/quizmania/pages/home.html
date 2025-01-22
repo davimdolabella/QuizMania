@@ -3,9 +3,7 @@
 <div class="main container">
     <h2 class="want-play">O que deseja jogar?</h2>
     <div class="quizes-container">
-        
         <div class="quizes">
-            
             {% for quiz in quizes %}
                 <a class="quiz-single {{quiz.difficulty}}" href="{% url 'quizmania:quiz' quiz.pk %}">
                     <h3 class="quiz-title">{{ quiz.title }}</h3>
@@ -22,7 +20,6 @@
                         </p>
                     </div>
                 </a>
-                
             {% endfor %}
         </div>
     </div>

@@ -160,7 +160,7 @@ h1,h2,h3,h4,h5,h6{
 .footer-container{
     background: var(--color-primary-dark-header);
     width: 100%;
-    margin-top: auto;
+  
     position: absolute;
     bottom: 0;
     
@@ -246,13 +246,13 @@ h1,h2,h3,h4,h5,h6{
     text-decoration: none;
     color: var(--color-white);
 }
-.slick-slide.Facil{
+.slick-slide.Fácil{
     background-color: rgb(40, 149, 21);
 }
-.slick-slide.Medio{
+.slick-slide.Médio{
     background-color: rgb(143, 155, 32);
 }
-.slick-slide.Dificil{
+.slick-slide.Difícil{
     background-color: rgb(136, 36, 21);
 }
 .slick-slide.slick-current {
@@ -291,7 +291,66 @@ h1,h2,h3,h4,h5,h6{
 .quiz-description {
     overflow: hidden;
 }
-
+/* detail quiz page */
+.detail-quiz{
+    max-width: 60rem;
+    width: 100%;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.409);
+    padding: 3.5rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.detail-quiz.Fácil{
+    background-color: rgba(30, 111, 16, 0.939);
+}
+.detail-quiz.Médio{
+    background-color: rgb(127, 138, 29);
+}
+.detail-quiz.Difícil{
+    background-color: rgba(168, 41, 22, 0.69);
+}
+.quiz-detail-img{
+    width: 100%;
+    border-radius: 15px;
+}
+.detail-quiz .title{
+    text-align: center;
+}
+.quiz-base-description p{
+    margin-bottom: 1rem;
+}
+.detail_buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+.continue, .return{
+    background: red;
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 15px;
+    color: var(--color-white);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: all .3s ease;
+    
+}
+.continue{
+    background: green;
+}
+.continue:hover, .return:hover{
+    transform: scale(1.05);
+}
+@media screen and (min-height: 600px) {
+    .footer-container{
+        position: relative;
+    }
+}
 
 
 @media  screen and (max-width:1000px) {
@@ -339,5 +398,16 @@ h1,h2,h3,h4,h5,h6{
         padding: 2rem;
         margin: 1rem;
     }
-    
+    .detail-quiz .title{
+        font-size: 1.8rem;
+    }
+    .quiz-description{
+        font-size: 1.25rem;
+    }
+    .quiz-base-description p{
+        font-size: 1.25rem;
+    }
+    .continue, .return{
+        font-size: 1.25rem;
+    }
 }

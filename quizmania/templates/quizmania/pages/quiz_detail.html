@@ -1,16 +1,33 @@
 {% extends "global/base.html" %}
 {% block content %}
 <div class="main container">
-    <div class="detail_quiz">
+    <div class="detail-quiz {{quiz.difficulty}}">
         <h2 class="title">{{quiz.title}}</h2>
-        <div class="quiz-cover" style="background-image: url({{quiz.cover.url}});">.</div>
+        <img class="quiz-detail-img" src="{{ quiz.cover.url }}" alt="">
         <div class="quiz-base-description">
+            {% if easy_questions %}
             <p>
-                Este quiz possui{{title}}
+                Este quiz possui {{ easy_questions }} questões Fáceis.
             </p>
+            {% endif %}
+            {% if mid_questions %}
+            <p>
+                Este quiz possui {{ mid_questions }} questões Médias.
+            </p>
+            {% endif %}
+            {% if diff_questions %}
+            <p>
+                Este quiz possui {{ diff_questions }} questões Difíceis.
+            </p>
+            {% endif %}
         </div>
         <div class="quiz-description">
             {{quiz.description}}
+        </div>
+        <div class="detail_buttons">
+            <a href="#" class="continue">Começar</a>
+            <a href="{% url 'quizmania:home' %}" class="return">Voltar</a>
+
         </div>
     </div>    
 </div>

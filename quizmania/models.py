@@ -23,21 +23,23 @@ class Quiz(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, related_name='quizes', null=True
     )
-    def difficulty(self):
+    difficulty = models.ForeignKey(
+        Difficulty, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    def calculate_difficulty(self):
         difficulty_value = 0
         if self.questions.all().exists():
             for question in self.questions.all():
                 difficulty_value += question.difficulty.id
-            media = difficulty_value/len(self.questions.all()) 
+            media = difficulty_value / len(self.questions.all())
             media = math.ceil(media)
-            if media == 1:
-                return 'Facil'
-            if media == 2:
-                return 'Medio'
-            if media == 3:
-                return 'Dificil'
-        else:
-            return 'Facil'
+            return Difficulty.objects.get(id=media)
+        return Difficulty.objects.get(name='Facil')
+    
+    def save(self, *args, **kwargs):
+        self.difficulty = self.calculate_difficulty()
+        super().save(*args, **kwargs)
 class Question(models.Model):
     def __str__(self):
         return self.question

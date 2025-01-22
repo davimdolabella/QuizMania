@@ -5,7 +5,7 @@ from . import models
 class QuizListViewBase(ListView):
     model = models.Quiz
     context_object_name = 'quizes'
-    ordering = ['?']
+    ordering = ['difficulty']
     template_name = ''
     paginate_by = None
 
@@ -20,7 +20,9 @@ class QuizDetail(DetailView):
         ctx = super().get_context_data(*args, **kwargs)
         quiz = ctx.get('quiz')
         ctx.update({
-            'title':quiz.questions.all().first().answers.all().order_by('?'),
+            'easy_questions':len(quiz.questions.all().filter(difficulty__pk=1)),
+            'mid_questions':len(quiz.questions.all().filter(difficulty__pk=2)),
+            'diff_questions':len(quiz.questions.all().filter(difficulty__pk=3)),
         })
         return ctx
     
