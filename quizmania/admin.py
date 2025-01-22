@@ -17,7 +17,7 @@ class QuestionAdmin(admin.ModelAdmin):
     
 @admin.register(models.Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ['answer','question']
+    list_display = ['answer','question', 'is_correct']
      
 @admin.register(models.Profile)
 class ProfileAdmin(admin.ModelAdmin):

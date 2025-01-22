@@ -204,13 +204,16 @@ h1,h2,h3,h4,h5,h6{
     border: none;
     width: 50px;
     height: 50px;
-    font-size: 20px;
+    font-size: 3rem;
     padding: 10px;
     cursor: pointer;
     z-index: 10;
     transition: background-color 0.3s ease;
     border-radius: 50%;
-    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
     
 }
 
@@ -221,31 +224,17 @@ h1,h2,h3,h4,h5,h6{
 .slick-prev {
     left: -2%; 
 }
-.slick-prev::before {
-    content: "◄"; 
-    color: white;
-    position: absolute;
-    top: 25%;
-    left: 25%;
-}
 
 .slick-next {
     right: -2%;
 }
-.slick-next::before {
-    content:"►";
-    color:white;
-    position: absolute;
-    top: 27%;
-    left: 30%;
-    
-}
+
 .slide-list{
     overflow-y: visible !important;
 }
 .slick-slide {
     background-color: rgb(3,3,200);
-
+    height: 30rem !important;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
@@ -253,13 +242,24 @@ h1,h2,h3,h4,h5,h6{
     border-radius: 15px;
     opacity: 0.5;
     transition: all ease-in-out .3s;
-    
-
+    pointer-events: none !important;
+    text-decoration: none;
+    color: var(--color-white);
+}
+.slick-slide.Facil{
+    background-color: rgb(40, 149, 21);
+}
+.slick-slide.Medio{
+    background-color: rgb(143, 155, 32);
+}
+.slick-slide.Dificil{
+    background-color: rgb(136, 36, 21);
 }
 .slick-slide.slick-current {
     opacity: 1;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    pointer-events: all !important;
 }
 
 .slick-slide.slick-current:hover {
@@ -268,6 +268,7 @@ h1,h2,h3,h4,h5,h6{
 
 .single-img {
     width: 100%;
+    
     border-radius: 15px;
     margin-bottom: 1rem;
 }
@@ -318,16 +319,16 @@ h1,h2,h3,h4,h5,h6{
     .slick-slide {
         margin: 0 .5rem;
         padding: 1rem;
+        height: 100% !important;
     
     }
     /* .quizes{
         pointer-events: none;
     } */
+    
 }
 @media  screen and (max-width:549px) {
-    .footer-container{
-        position: relative;
-    }
+    
     .quiz-content p{
         font-size: 1.6rem;
     }
@@ -338,4 +339,5 @@ h1,h2,h3,h4,h5,h6{
         padding: 2rem;
         margin: 1rem;
     }
+    
 }

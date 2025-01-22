@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% include "global/partials/head.html" %}
+<body>
+    
+    {% include "global/partials/header.html" %}
+    <main class="main-container">
+        {% block content %}{% endblock content %}
+    </main>
+    {% include "global/partials/footer.html" %}
+    <script src="{% static "global/js/JQuery/jquery-3.7.1.js" %}"></script>
+    <script src="{% static "global/js/JQuery/jquery-migrate-3.5.2.js" %}"></script>
+    <script src="{% static "global/js/Slick/slick.min.js" %}"></script>
+    <script src="{%  static "global/js/scroll_quizes_slider.js" %}"></script>
+
+</body>
+</html>

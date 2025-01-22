@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import math
 
 class Category(models.Model):
     name = models.CharField(max_length=65)
@@ -18,11 +19,25 @@ class Quiz(models.Model):
     description = models.TextField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    cover = models.ImageField(upload_to='quiz/covers/%Y/%m/%d/', blank=True, default='')
+    cover = models.ImageField(upload_to='quiz/covers/%Y/%m/%d/', blank=True, null=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, related_name='quizes', null=True
     )
-
+    def difficulty(self):
+        difficulty_value = 0
+        if self.questions.all().exists():
+            for question in self.questions.all():
+                difficulty_value += question.difficulty.id
+            media = difficulty_value/len(self.questions.all()) 
+            media = math.ceil(media)
+            if media == 1:
+                return 'Facil'
+            if media == 2:
+                return 'Medio'
+            if media == 3:
+                return 'Dificil'
+        else:
+            return 'Facil'
 class Question(models.Model):
     def __str__(self):
         return self.question

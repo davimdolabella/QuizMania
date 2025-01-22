@@ -1,0 +1,17 @@
+{% extends "global/base.html" %}
+{% block content %}
+<div class="main container">
+    <div class="detail_quiz">
+        <h2 class="title">{{quiz.title}}</h2>
+        <div class="quiz-cover" style="background-image: url({{quiz.cover.url}});">.</div>
+        <div class="quiz-base-description">
+            <p>
+                Este quiz possui{{title}}
+            </p>
+        </div>
+        <div class="quiz-description">
+            {{quiz.description}}
+        </div>
+    </div>    
+</div>
+{% endblock content %}
