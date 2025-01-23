@@ -14,6 +14,7 @@ class QuizAdmin(admin.ModelAdmin):
 @admin.register(models.Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = [ 'question', 'difficulty', 'quiz']
+    list_filter=['quiz']
     
 @admin.register(models.Answer)
 class AnswerAdmin(admin.ModelAdmin):

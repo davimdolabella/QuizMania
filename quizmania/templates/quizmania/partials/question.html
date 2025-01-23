@@ -1,0 +1,12 @@
+
+<div class="question-container detail-quiz {{question.difficulty}}" style="background-image: url({{question_img}});">
+    <div class="question ">
+        
+        <h2 class="question-title">{{ question.question  }}</h2>
+        <div class="answer-container">
+            {% for answer in answers %}
+                <a class="answer" href="{% url 'quizmania:is_correct' answer.pk %}">{{answer.answer}}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

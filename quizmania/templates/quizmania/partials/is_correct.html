@@ -1,0 +1,17 @@
+
+<div class="question-container detail-quiz {{is_correct_answer}}" style="background-image: url({{question_img}});">
+    <div class="question ">
+        {% if is_correct_answer %}
+            <h2 class="question-title">Resposta Correta!</h2>
+        {% else %}
+            <h2 class="question-title">Resposta Errada...</h2>
+            <h2 class="question-title">Resposta Correta: {{correct_answer}}</h2>
+        {% endif %}
+        {% if next_question_id %}
+            <a class="continue" href="{% url 'quizmania:question' next_question_id %}">Continuar</a>
+        {% else %}
+            <a class="continue" href="{% url 'quizmania:home' %}">Finalizar</a>
+        {% endif %}
+        
+    </div>
+</div>

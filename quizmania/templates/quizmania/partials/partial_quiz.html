@@ -1,0 +1,28 @@
+<div class="detail-quiz {{quiz.difficulty}}">
+    <h2 class="title">{{quiz.title}}</h2>
+    <img class="quiz-detail-img" src="{{ quiz.cover.url }}" alt="">
+    <div class="quiz-base-description">
+        {% if easy_questions %}
+        <p>
+            Este quiz possui {{ easy_questions }} questões Fáceis.
+        </p>
+        {% endif %}
+        {% if mid_questions %}
+        <p>
+            Este quiz possui {{ mid_questions }} questões Médias.
+        </p>
+        {% endif %}
+        {% if diff_questions %}
+        <p>
+            Este quiz possui {{ diff_questions }} questões Difíceis.
+        </p>
+        {% endif %}
+    </div>
+    <div class="quiz-description">
+        {{quiz.description}}
+    </div>
+    <div class="detail_buttons">
+        <a href="{% url 'quizmania:question' question_id %}" class="continue">Começar</a>
+        <a href="{% url 'quizmania:home' %}" class="return">Voltar</a>
+    </div>
+</div> 
