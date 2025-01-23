@@ -4,6 +4,7 @@ $('.quizes').slick({
     lazyLoad: 'ondemand',
     centerPadding: '100px',
     slidesToShow: 5,
+    
     speed: 250,
     
     responsive: [
