@@ -43,11 +43,15 @@ class Quiz(models.Model):
 class Question(models.Model):
     def __str__(self):
         return self.question
+
     question = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     difficulty = models.ForeignKey(
         Difficulty, on_delete=models.CASCADE, related_name='questions' 
+    )
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name='questions', null=True
     )
     quiz = models.ForeignKey(
         Quiz, on_delete=models.CASCADE, related_name='questions'

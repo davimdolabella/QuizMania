@@ -69,26 +69,8 @@ class Is_Correct(View):
         
         self.request.session['answers_current_quiz'] = answers
         next_question_id = self.request.session.get('next_question_id', [])
-        correct_answers = 0
-        correct_list = []
-        incorrect_list = []
-        incorrect_answers = 0
-        quiz_points = 0
+        
 
-        for list in answers:
-            if list[0]:
-                correct_answers += 1
-                correct_list.append(list[1])
-                if 'D' in list[1]:
-                    quiz_points += 3
-                elif 'M' in list[1]:
-                    quiz_points +=2
-                elif 'F' in list[1]:
-                    quiz_points += 1
-            else:
-                incorrect_answers += 1
-                incorrect_list.append(list[1])
-        print(answers, correct_answers, incorrect_answers, quiz_points)
 
         return render(request, 'quizmania/pages/quiz.html',{
             'is_correct_page':True,
@@ -99,21 +81,33 @@ class Is_Correct(View):
     
 class Show_Result(View):
     def get(self, request):
-        answers =  self.request.session.get('answers_current_quiz',[])
+         
+        answers = self.request.session.get('answers_current_quiz',[])
         correct_answers = 0
-        correct_list = []
-        incorrect_list = []
         incorrect_answers = 0
+        quiz_points = 0
+        is_a_good_result = False
+
         for list in answers:
             if list[0]:
                 correct_answers += 1
-                correct_list.append(list[1])
+                if 'D' in list[1]:
+                    quiz_points += 3
+                elif 'M' in list[1]:
+                    quiz_points +=2
+                elif 'F' in list[1]:
+                    quiz_points += 1
             else:
                 incorrect_answers += 1
-                incorrect_list.append(list[1])
-        print(answers, correct_answers, incorrect_answers)
-
+        x = 100/ (correct_answers + incorrect_answers)
+        correct_answers_percentage = x * correct_answers
+        incorrect_answers_percentage = x * incorrect_answers
+        if correct_answers * x > 60:
+            is_a_good_result = True
         return render(request, 'quizmania/pages/quiz.html',{
             'is_result_page':True,
-
+            'quiz_points':quiz_points,
+            'correct_answers': f'{correct_answers_percentage:.0f}%',
+            'incorrect_answers':f'{incorrect_answers_percentage:.0f}%',
+            'is_a_good_result':is_a_good_result,
         })

@@ -18,6 +18,7 @@ ALLOWED_HOSTS = [
     '2095-177-47-168-165.ngrok-free.app',
     'efd9-177-47-168-165.ngrok-free.app',
     '0870-177-47-168-165.ngrok-free.app',
+    'ca4c-177-47-168-165.ngrok-free.app',
     '127.0.0.1'
 ]
 

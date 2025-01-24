@@ -1,0 +1,13 @@
+
+<div class="question-container detail-quiz {{is_a_good_result}}" style="background-image: url({{question_img}});">
+    <div class="question ">
+        <h2 class="question-title">Resultado do quiz: </h2>
+        <h2 class="question-title">Pontuação final: {{quiz_points}}</h2>
+        <div class="circular-chart" style="--percentage-correct: {{correct_answers}}; --percentage-incorrect: {{incorrect_answers}};">
+            <div class="circle">
+              <span class="text">Acertou {{correct_answers}}</span>
+            </div>
+          </div>
+        <a class="continue" href="{% url 'quizmania:home' %}">Continuar</a>
+    </div>
+</div>

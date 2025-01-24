@@ -3,12 +3,12 @@
 <div class="main container">
     {% if quiz %}
         {% include "quizmania/partials/partial_quiz.html" %}
-    {% endif %}
-    {% if question %}
+    {% elif question %}
         {% include "quizmania/partials/question.html" %}
-    {% endif %}
-    {% if is_correct_page %}
+    {% elif is_correct_page %}
         {% include "quizmania/partials/is_correct.html" %}
+    {% elif is_result_page %}
+        {% include "quizmania/partials/quiz_result.html" %}
     {% endif %}
 </div>
 {% endblock content %}

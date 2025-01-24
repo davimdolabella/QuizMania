@@ -10,7 +10,7 @@
         {% if next_question_id %}
             <a class="continue" href="{% url 'quizmania:question' next_question_id %}">Continuar</a>
         {% else %}
-            <a class="continue" href="{% url 'quizmania:home' %}">Finalizar</a>
+            <a class="continue" href="{% url 'quizmania:show_result' %}">Finalizar</a>
         {% endif %}
         
     </div>
