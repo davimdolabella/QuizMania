@@ -18,14 +18,14 @@ class QuizDetail(DetailView):
     model = models.Quiz
     context_object_name = 'quiz'
     template_name = 'quizmania/pages/quiz.html'
-    
+
     def get_context_data(self, *args, **kwargs):
+        self.request.session.flush()
         ctx = super().get_context_data(*args, **kwargs)
         quiz = ctx.get('quiz')
         questions_id =[question.id for question in quiz.questions.all().order_by('?')] 
         question_id = questions_id[0]
         self.request.session['current_quiz_questions_id'] = questions_id
-        print(self.request.session['current_quiz_questions_id'], question_id) 
         ctx.update({
             'easy_questions':len(quiz.questions.all().filter(difficulty__pk=1)),
             'mid_questions':len(quiz.questions.all().filter(difficulty__pk=2)),
@@ -35,6 +35,7 @@ class QuizDetail(DetailView):
         return ctx
 
 class QuizCurrentQuestion(DetailView):
+
     model = models.Question
     context_object_name = 'question'
     template_name = 'quizmania/pages/quiz.html'
@@ -49,28 +50,70 @@ class QuizCurrentQuestion(DetailView):
             return redirect(reverse('quizmania:home'))
         
         return super().get(request, *args, **kwargs)
-    
-
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
         question = ctx.get('question')
-        
-        print(self.request.session['current_quiz_questions_id']) 
         ctx.update({
             'answers': question.answers.all().order_by('?'),
             'question_img': question.quiz.cover.url
         })
 
         return ctx
+    
 class Is_Correct(View):
     def get(self, request, pk):
-        
+        answers = self.request.session.get('answers_current_quiz',[])
         answer = models.Answer.objects.filter(pk=pk).first()
         is_correct = answer.is_correct
+        answers.append([is_correct,str(answer.question.difficulty) ])
+        
+        self.request.session['answers_current_quiz'] = answers
         next_question_id = self.request.session.get('next_question_id', [])
+        correct_answers = 0
+        correct_list = []
+        incorrect_list = []
+        incorrect_answers = 0
+        quiz_points = 0
+
+        for list in answers:
+            if list[0]:
+                correct_answers += 1
+                correct_list.append(list[1])
+                if 'D' in list[1]:
+                    quiz_points += 3
+                elif 'M' in list[1]:
+                    quiz_points +=2
+                elif 'F' in list[1]:
+                    quiz_points += 1
+            else:
+                incorrect_answers += 1
+                incorrect_list.append(list[1])
+        print(answers, correct_answers, incorrect_answers, quiz_points)
+
         return render(request, 'quizmania/pages/quiz.html',{
             'is_correct_page':True,
             'is_correct_answer': is_correct,
             'correct_answer': answer.question.answers.all().filter(is_correct=True).first(),
             'next_question_id': next_question_id
+        })
+    
+class Show_Result(View):
+    def get(self, request):
+        answers =  self.request.session.get('answers_current_quiz',[])
+        correct_answers = 0
+        correct_list = []
+        incorrect_list = []
+        incorrect_answers = 0
+        for list in answers:
+            if list[0]:
+                correct_answers += 1
+                correct_list.append(list[1])
+            else:
+                incorrect_answers += 1
+                incorrect_list.append(list[1])
+        print(answers, correct_answers, incorrect_answers)
+
+        return render(request, 'quizmania/pages/quiz.html',{
+            'is_result_page':True,
+
         })
