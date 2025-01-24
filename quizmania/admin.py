@@ -13,8 +13,9 @@ class QuizAdmin(admin.ModelAdmin):
     
 @admin.register(models.Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = [ 'question', 'difficulty', 'quiz', 'category']
-    list_filter=['quiz']
+    ordering=['id']
+    list_display = [ 'question', 'difficulty', 'category']
+
     
 @admin.register(models.Answer)
 class AnswerAdmin(admin.ModelAdmin):

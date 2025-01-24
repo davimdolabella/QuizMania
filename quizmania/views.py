@@ -23,13 +23,23 @@ class QuizDetail(DetailView):
         self.request.session.flush()
         ctx = super().get_context_data(*args, **kwargs)
         quiz = ctx.get('quiz')
-        questions_id =[question.id for question in quiz.questions.all().order_by('?')] 
+        questions_id =[] 
+        
+        if quiz.qnt_easy_questions:
+            questions_id.extend([question.id for question in quiz.category.questions.all().filter(difficulty__id=1).order_by('?')][:(quiz.qnt_easy_questions)])
+        if quiz.qnt_mid_questions:
+            questions_id.extend([question.id for question in quiz.category.questions.all().filter(difficulty__id=2).order_by('?')][:(quiz.qnt_mid_questions)])
+        if quiz.qnt_diff_questions:
+            questions_id.extend([question.id for question in quiz.category.questions.all().filter(difficulty__id=3).order_by('?')][:(quiz.qnt_diff_questions)])
+
         question_id = questions_id[0]
+        print(questions_id)
+        self.request.session['current_quiz_cover_url'] = quiz.cover.url
         self.request.session['current_quiz_questions_id'] = questions_id
         ctx.update({
-            'easy_questions':len(quiz.questions.all().filter(difficulty__pk=1)),
-            'mid_questions':len(quiz.questions.all().filter(difficulty__pk=2)),
-            'diff_questions':len(quiz.questions.all().filter(difficulty__pk=3)),
+            'easy_questions':quiz.qnt_easy_questions,
+            'mid_questions':quiz.qnt_mid_questions,
+            'diff_questions':quiz.qnt_diff_questions,
             'question_id': question_id
         })
         return ctx
@@ -45,17 +55,18 @@ class QuizCurrentQuestion(DetailView):
         next_question_id = questions_id[0] if questions_id else None
         self.request.session['current_quiz_questions_id'] = questions_id
         self.request.session['next_question_id'] = next_question_id
-
+        
         if not questions_id and questions_id != []:
             return redirect(reverse('quizmania:home'))
         
         return super().get(request, *args, **kwargs)
     def get_context_data(self, *args, **kwargs):
+        cover_url = self.request.session.get('current_quiz_cover_url')
         ctx = super().get_context_data(*args, **kwargs)
         question = ctx.get('question')
         ctx.update({
             'answers': question.answers.all().order_by('?'),
-            'question_img': question.quiz.cover.url
+            'question_img': cover_url
         })
 
         return ctx

@@ -20,6 +20,9 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to='quiz/covers/%Y/%m/%d/', blank=True, null=True)
+    qnt_easy_questions = models.IntegerField(null=True, blank=True)
+    qnt_mid_questions = models.IntegerField(null=True, blank=True)
+    qnt_diff_questions = models.IntegerField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, related_name='quizes', null=True
     )
@@ -52,9 +55,6 @@ class Question(models.Model):
     )
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='questions', null=True
-    )
-    quiz = models.ForeignKey(
-        Quiz, on_delete=models.CASCADE, related_name='questions'
     )
 
 class Answer(models.Model):
