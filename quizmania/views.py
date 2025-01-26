@@ -20,7 +20,14 @@ class QuizDetail(DetailView):
     template_name = 'quizmania/pages/quiz.html'
 
     def get_context_data(self, *args, **kwargs):
-        self.request.session.flush()
+        if 'current_quiz_cover_url' in self.request.session:
+            del self.request.session['current_quiz_cover_url']
+        if 'current_quiz_questions_id' in self.request.session:
+            del self.request.session['current_quiz_questions_id']
+        if 'next_question_id' in self.request.session:
+            del self.request.session['next_question_id']
+        if 'answers_current_quiz' in self.request.session:
+            del self.request.session['answers_current_quiz']
         ctx = super().get_context_data(*args, **kwargs)
         quiz = ctx.get('quiz')
         questions_id =[] 
