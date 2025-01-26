@@ -27,22 +27,11 @@ class Quiz(models.Model):
         Category, on_delete=models.SET_NULL, related_name='quizes', null=True
     )
     difficulty = models.ForeignKey(
-        Difficulty, on_delete=models.SET_NULL, null=True, blank=True
+        Difficulty, on_delete=models.SET_NULL, null=True, 
     )
 
-    def calculate_difficulty(self):
-        difficulty_value = 0
-        if self.questions.all().exists():
-            for question in self.questions.all():
-                difficulty_value += question.difficulty.id
-            media = difficulty_value / len(self.questions.all())
-            media = math.ceil(media)
-            return Difficulty.objects.get(id=media)
-        return Difficulty.objects.get(name='Facil')
     
-    def save(self, *args, **kwargs):
-        self.difficulty = self.calculate_difficulty()
-        super().save(*args, **kwargs)
+
 class Question(models.Model):
     def __str__(self):
         return self.question
