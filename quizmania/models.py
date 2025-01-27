@@ -62,11 +62,11 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile'
     )
-    competed_quizes = models.ManyToManyField(
+    completed_quizes = models.ManyToManyField(
         Quiz, blank=True, related_name='profiles'
     )
-    correct_questions = models.ManyToManyField(
-        Question, blank=True, related_name='profiles'
-    )
+    correct_questions = models.IntegerField(default=0)
+    incorrect_questions = models.IntegerField(default=0)
+    
     points = models.IntegerField(default=0)
     ranking = models.PositiveIntegerField(blank=True, null=True)

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
+from django.contrib import messages
 from . import models
 
 class QuizListViewBase(ListView):
@@ -10,10 +11,13 @@ class QuizListViewBase(ListView):
     ordering = ['difficulty']
     template_name = ''
     paginate_by = None
+    
 
 class HomeQuizListViewBase(QuizListViewBase):
     template_name = 'quizmania/pages/home.html'
-    
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 class QuizDetail(DetailView):
     model = models.Quiz
     context_object_name = 'quiz'

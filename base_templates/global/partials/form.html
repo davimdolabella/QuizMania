@@ -1,18 +1,15 @@
 <div class="main container form-container">
     <form action="{{ form_action }}" method="POST" class="form border">
-        {% if is_task_form %}
-        <div class="form-content form-content-grid task">
-        {% else %}
+        
         <div class="form-content form-content-grid">
-        {% endif %}
+
         
             {% csrf_token %}
             {% for field in form %}
-                {% if task.is_past_deadline %}
-                <div class="form-group deadline">
-                {% else %}
+
+
                 <div class="form-group">
-                {% endif %}
+
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
                     {% for error in field.errors %}

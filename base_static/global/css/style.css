@@ -115,8 +115,10 @@ h1,h2,h3,h4,h5,h6{
     position: fixed;
     top: 80px;
     right: 0;
+    z-index: 3;
   }
-.message {
+  .message {
+    z-index: 3;
     padding: 0;
     padding-left: 1.5rem;
     border-radius: 4px;
@@ -128,6 +130,17 @@ h1,h2,h3,h4,h5,h6{
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .close-button {
+    cursor: pointer;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.296);
+    background: rgba(211, 211, 211, 0.493);
+    border: 2px solid rgba(103, 103, 103, 0.49);
+    margin-left: 1.5rem;
+    width: 4rem;
+    height: 4rem;
 }
 .message-error {
     border: 1px solid var(--color-error-dark);
@@ -462,6 +475,7 @@ h1,h2,h3,h4,h5,h6{
     font-weight: bold;
     color: var(--color-gray-2);
   }
+  /*form*/ 
   .form{
     background-color: var(--color-primary-dark-header);
     padding: var(--spacing-gutter-large) ;
@@ -529,7 +543,17 @@ h1,h2,h3,h4,h5,h6{
     padding-top:.5rem ;
     padding-bottom: .5rem;
   }
-
+  .form-container{
+    margin: 0;
+    padding-top:0 ;
+  }
+  .main_menssage{
+    text-align: center;
+    margin-bottom:2rem;
+  }
+  .form-container-container{
+    gap: 1rem;
+  }
 
   /*login*/
   .new-user-msg{
@@ -575,6 +599,11 @@ h1,h2,h3,h4,h5,h6{
     
 }
 @media  screen and (max-width:600px) {
+    .form-content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+        gap: calc(var(--spacing-gutter-medium) / 2) var(--spacing-gutter-medium);
+    }
     .form-container{
         padding: var(--spacing-gutter-medium);
     }
