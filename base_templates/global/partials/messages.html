@@ -1,0 +1,11 @@
+{% load static %}
+{% if messages %}
+<div class="main-content center container messages-container">
+    {% for message in messages %}
+        <div class="message {{ message.tags }}" >
+            {{ message }} <button class="close-button" title="close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+<script src="{% static "global/js/close_message_button.js" %}"></script>

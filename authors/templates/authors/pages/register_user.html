@@ -1,0 +1,9 @@
+
+{% extends "global/base.html" %}
+{% block content %}
+    <div class="main container">
+        <h1 class="main_menssage">Create User</h1>
+        {% include "global/partials/form.html" %}
+        <p class="new-user-msg">Do you already have an account? <a href="{% url 'authors:login' %}">Click here</a></p>
+    </div>
+{% endblock content %}

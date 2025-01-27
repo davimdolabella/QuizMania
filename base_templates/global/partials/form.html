@@ -1,0 +1,38 @@
+<div class="main container form-container">
+    <form action="{{ form_action }}" method="POST" class="form border">
+        {% if is_task_form %}
+        <div class="form-content form-content-grid task">
+        {% else %}
+        <div class="form-content form-content-grid">
+        {% endif %}
+        
+            {% csrf_token %}
+            {% for field in form %}
+                {% if task.is_past_deadline %}
+                <div class="form-group deadline">
+                {% else %}
+                <div class="form-group">
+                {% endif %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                        <p class="message message-error form-error">{{ error }}</p>
+                    {% empty %}
+                        {% if field.help_text %}
+                            <p class="help-text">{{field.help_text}}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="form-content form-content-grid">
+            <div class="form-group">
+              <button type="submit" class="border">Send</button>
+            </div>
+        </div>
+        {% if is_login_page %}
+        
+        {% endif %}
+    </form>
+</div>
