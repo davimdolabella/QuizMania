@@ -1,9 +1,33 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from . import models
+LOGIN_URL = 'authors:login'
+REDIRECT_FIELD_NAME = 'next'
+
+def get_quiz_session(request, quiz):
+    user = request.user 
+    session, created = models.QuizSession.objects.get_or_create(
+        user=user,
+    )
+    session.current_quiz = quiz
+    session.save()
+    return session
+def get_user_profile(request):
+    user = request.user 
+    profile, created = models.Profile.objects.get_or_create(user=user)
+    return profile
+def save_in_profile(profile, quiz_session):
+    profile.completed_quizes.add(quiz_session.current_quiz)
+    profile.correct_questions += quiz_session.correct_answers
+    profile.incorrect_questions += quiz_session.incorrect_answers
+    profile.points += quiz_session.points
+    profile.correct_questions_percentage = profile.calculate_correct_questions_percentage()
+    profile.ranking = profile.get_rank_position()
+    profile.save()
 
 class QuizListViewBase(ListView):
     model = models.Quiz
@@ -22,78 +46,80 @@ class QuizDetail(DetailView):
     model = models.Quiz
     context_object_name = 'quiz'
     template_name = 'quizmania/pages/quiz.html'
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            messages.info(self.request, "Entre em sua conta para jogar...")
+            return redirect(reverse('authors:login'))
+        return super().dispatch(request, *args, **kwargs)
+    def get_questions_by_difficulty(self, quiz, difficulty_id, limit):
+        if not limit:
+            return []
+        else:
+            return list([question.id for question in quiz.category.questions.all().filter(difficulty__id=difficulty_id).order_by('?')][:(limit)])
 
     def get_context_data(self, *args, **kwargs):
-        if 'current_quiz_cover_url' in self.request.session:
-            del self.request.session['current_quiz_cover_url']
-        if 'current_quiz_questions_id' in self.request.session:
-            del self.request.session['current_quiz_questions_id']
-        if 'next_question_id' in self.request.session:
-            del self.request.session['next_question_id']
-        if 'answers_current_quiz' in self.request.session:
-            del self.request.session['answers_current_quiz']
-        ctx = super().get_context_data(*args, **kwargs)
-        quiz = ctx.get('quiz')
+        context = super().get_context_data(*args, **kwargs)
+        quiz = context.get('quiz')
+        quiz_session = get_quiz_session(self.request, quiz)
+        quiz_session.reset_session()
         questions_id =[] 
-        
-        if quiz.qnt_easy_questions:
-            questions_id.extend([question.id for question in quiz.category.questions.all().filter(difficulty__id=1).order_by('?')][:(quiz.qnt_easy_questions)])
-        if quiz.qnt_mid_questions:
-            questions_id.extend([question.id for question in quiz.category.questions.all().filter(difficulty__id=2).order_by('?')][:(quiz.qnt_mid_questions)])
-        if quiz.qnt_diff_questions:
-            questions_id.extend([question.id for question in quiz.category.questions.all().filter(difficulty__id=3).order_by('?')][:(quiz.qnt_diff_questions)])
-
+        questions_id.extend(
+            self.get_questions_by_difficulty(quiz, difficulty_id=1, limit=quiz.qnt_easy_questions) +
+            self.get_questions_by_difficulty(quiz, difficulty_id=2, limit=quiz.qnt_mid_questions) +
+            self.get_questions_by_difficulty(quiz, difficulty_id=3, limit=quiz.qnt_diff_questions)
+        )
         question_id = questions_id[0]
-        print(questions_id)
-        self.request.session['current_quiz_cover_url'] = quiz.cover.url
-        self.request.session['current_quiz_questions_id'] = questions_id
-        ctx.update({
+        quiz_session.questions_list = questions_id
+        quiz_session.save()
+        context.update({
             'easy_questions':quiz.qnt_easy_questions,
             'mid_questions':quiz.qnt_mid_questions,
             'diff_questions':quiz.qnt_diff_questions,
             'question_id': question_id
         })
-        return ctx
+        return context
 
-class QuizCurrentQuestion(DetailView):
-
+class QuizCurrentQuestion(LoginRequiredMixin, DetailView):
     model = models.Question
     context_object_name = 'question'
     template_name = 'quizmania/pages/quiz.html'
+    login_url = LOGIN_URL
+    redirect_field_name = REDIRECT_FIELD_NAME
     def get(self, request, *args, **kwargs):
-        questions_id = self.request.session.get('current_quiz_questions_id', [])
+        quiz_session = get_object_or_404(models.QuizSession, user=request.user)
+        questions_id = quiz_session.questions_list
+        if not questions_id:
+            return redirect(reverse('quizmania:show_result'))
         questions_id.pop(0)
-        next_question_id = questions_id[0] if questions_id else None
-        self.request.session['current_quiz_questions_id'] = questions_id
-        self.request.session['next_question_id'] = next_question_id
+        quiz_session.questions_list = questions_id
+        quiz_session.save()
         
-        if not questions_id and questions_id != []:
-            return redirect(reverse('quizmania:home'))
         
         return super().get(request, *args, **kwargs)
     def get_context_data(self, *args, **kwargs):
-        cover_url = self.request.session.get('current_quiz_cover_url')
-        ctx = super().get_context_data(*args, **kwargs)
-        question = ctx.get('question')
-        ctx.update({
+        session_quiz = get_object_or_404(models.QuizSession, user=self.request.user)
+        cover_url = session_quiz.current_quiz.cover.url
+        context = super().get_context_data(*args, **kwargs)
+        question = context.get('question')
+        context.update({
             'answers': question.answers.all().order_by('?'),
             'question_img': cover_url
         })
 
-        return ctx
+        return context
     
-class Is_Correct(View):
+class Is_Correct(LoginRequiredMixin, View):
+    login_url = LOGIN_URL
+    redirect_field_name = REDIRECT_FIELD_NAME
     def get(self, request, pk):
-        answers = self.request.session.get('answers_current_quiz',[])
-        answer = models.Answer.objects.filter(pk=pk).first()
+        quiz_session = get_object_or_404(models.QuizSession, user=request.user)
+        answers = quiz_session.answers if quiz_session.answers else []
+        answer = get_object_or_404(models.Answer, pk=pk)
         is_correct = answer.is_correct
-        answers.append([is_correct,str(answer.question.difficulty) ])
-        
-        self.request.session['answers_current_quiz'] = answers
-        next_question_id = self.request.session.get('next_question_id', [])
-        
-
-
+        answers.append({'is_correct':is_correct, 'difficulty':answer.question.difficulty.name})
+        quiz_session.answers = answers
+        next_question_id = quiz_session.questions_list[0] if quiz_session.questions_list else None
+        quiz_session.save()
         return render(request, 'quizmania/pages/quiz.html',{
             'is_correct_page':True,
             'is_correct_answer': is_correct,
@@ -101,35 +127,25 @@ class Is_Correct(View):
             'next_question_id': next_question_id
         })
     
-class Show_Result(View):
+class Show_Result(LoginRequiredMixin, View):
+    login_url = LOGIN_URL
+    redirect_field_name = REDIRECT_FIELD_NAME
     def get(self, request):
-         
-        answers = self.request.session.get('answers_current_quiz',[])
-        correct_answers = 0
-        incorrect_answers = 0
-        quiz_points = 0
-        is_a_good_result = False
+        quiz_session = get_object_or_404(models.QuizSession, user=request.user)
+        quiz_session.get_points()
+        quiz_session.calculate_correct_answers_percentage()
+        quiz_points = quiz_session.points
+        correct_answers_percentage = quiz_session.correct_answers_percentage
+        is_a_good_result = quiz_session.is_a_good_result
 
-        for list in answers:
-            if list[0]:
-                correct_answers += 1
-                if 'D' in list[1]:
-                    quiz_points += 3
-                elif 'M' in list[1]:
-                    quiz_points +=2
-                elif 'F' in list[1]:
-                    quiz_points += 1
-            else:
-                incorrect_answers += 1
-        x = 100/ (correct_answers + incorrect_answers)
-        correct_answers_percentage = x * correct_answers
-        incorrect_answers_percentage = x * incorrect_answers
-        if correct_answers * x > 60:
-            is_a_good_result = True
+        profile = get_user_profile(request)
+        save_in_profile(profile, quiz_session)
+
+        quiz_session.reset_session()
         return render(request, 'quizmania/pages/quiz.html',{
             'is_result_page':True,
             'quiz_points':quiz_points,
             'correct_answers': f'{correct_answers_percentage:.0f}%',
-            'incorrect_answers':f'{incorrect_answers_percentage:.0f}%',
+            'incorrect_answers':f'{100 - correct_answers_percentage:.0f}%',
             'is_a_good_result':is_a_good_result,
         })

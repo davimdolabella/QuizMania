@@ -65,7 +65,7 @@ def login_create(request):
 
             if authenticated_user is not None:
                 login(request, authenticated_user)
-                messages.success(request, 'Bem vindo de volta!')
+                messages.success(request, 'Entrou com sucesso!')
 
             else:
                 messages.error(request, 'Credênciais inválidas')

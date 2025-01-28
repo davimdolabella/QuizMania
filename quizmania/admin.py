@@ -23,5 +23,10 @@ class AnswerAdmin(admin.ModelAdmin):
      
 @admin.register(models.Profile)
 class ProfileAdmin(admin.ModelAdmin):
+    ordering=['-points','ranking']
+    list_display = ['user','correct_questions','points', 'ranking']
+
+@admin.register(models.QuizSession)
+class QuizSession(admin.ModelAdmin):
     ...
      
