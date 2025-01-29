@@ -1,0 +1,36 @@
+{% extends "global/base.html" %}
+{% block content %}
+<div class="main container">
+    <h2 class="username">Olá {{user}}</h2>
+    <div class="stats-container">
+        <div class="base-stats stats">
+            <h2>Estatísticas:</h2>
+            <p>Pontos: <span>{{user.profile.points}}</span></p>
+            <p>Rank: <span>{{user.profile.ranking}}º</span></p>
+        </div>
+        <div class="qustions-stats stats">
+            <h2>Questões:</h2>
+            <p>Questões certas: <span>{{user.profile.correct_questions}}</span></p>
+            <p>Questões erradas: <span>{{user.profile.incorrect_questions}}</span></p>
+            <div class="circular-chart" style="
+                --percentage-correct: {{user.profile.correct_questions_percentage}}%; --percentage-incorrect: {{user.profile.incorrect_questions_percentage}}%;
+            ">
+                <div class="circle">
+                  <span class="text">Acertou {{user.profile.correct_questions_percentage}}%</span>
+                </div>
+            </div>
+        </div>
+        <div class="quiz-stats stats">
+            <h2>Quizes completados:</h2>
+            <div class="quizes-stats-container">
+                {% for quiz in user.profile.completed_quizes.all %}
+                <div class="quiz-stats-single">
+                    <p>{{quiz.title}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+  </div>
+{% endblock content %}

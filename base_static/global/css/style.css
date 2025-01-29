@@ -565,6 +565,228 @@ h1,h2,h3,h4,h5,h6{
     color: var(--color-gray-3);
   }
   
+  .username {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: var(--color-white);
+    text-align: center;
+    margin-bottom: 2rem auto;
+
+}
+/*Profile*/
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    background: var(--color-primary-dark);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.stats {
+    background: var(--color-primary-dark-hover);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    color: var(--color-white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+}
+
+.stats h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary-light);
+}
+
+.stats p {
+    font-size: 1.6rem;
+    margin: 0.5rem 0;
+}
+
+.stats span {
+    font-weight: bold;
+    color: var(--color-success-dark);
+}
+
+.stats-container .circular-chart {
+    width: 60%;
+    padding-top: 60%;
+    margin: 1rem auto;
+    margin-top: 2rem;
+    background: conic-gradient(
+        rgb(19, 137, 19) 0% var(--percentage-correct),
+        rgb(224, 5, 5) var(--percentage-correct) var(--percentage-incorrect)
+    );
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.stats-container .circle {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-primary-dark);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px inset;
+    position: absolute;
+}
+
+.text {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--color-white);
+    text-align: center;
+}
+.quiz-stats{
+    width: 100%;
+}
+.quizes-stats-container {
+    
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    overflow-y: auto;
+    max-height: 22rem;
+
+}
+
+.quizes-stats-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.quizes-stats-container::-webkit-scrollbar-track {
+    background: #f0f0f0; 
+    border-radius: 10px;
+}
+
+.quizes-stats-container::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.quizes-stats-container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.quiz-stats-single {
+    background: var(--color-gray-7);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    color: var(--color-white);
+    font-size: 1.4rem;
+    text-align: center;
+    min-width: 150px;
+}
+/********************************/
+.rank{
+    gap: 0;
+    margin-top: 3rem;
+}
+.rank-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-white);
+    margin-bottom: 20px;
+}
+
+.rank-container {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: hidden;
+
+}
+
+.rank-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--color-white);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 1rem;
+    background-color: var(--color-primary-dark-hover);
+    overflow: hidden;
+}
+
+.rank-table thead {
+    color: var(--color-white);
+    text-transform: uppercase;
+    background-color: var(--color-primary-dark-header);
+}
+
+.rank-table th, 
+.rank-table td {
+    padding: 12px;
+    text-align: center;
+    max-width: 3rem;
+    overflow: hidden;
+}
+.rank-table td {
+    border-top: 1px solid var(--color-gray-3);
+}
+
+.rank-table .current-user{
+    color: var(--color-alert-light);
+}
+
+
+
+.rank-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transition:all 0.3s ease;
+}
+.rank-table .first-place {
+   color: gold;
+    font-weight: bold;
+}
+
+.rank-table .second-place {
+   color: silver;
+    font-weight: bold;
+}
+
+.rank-table .third-place {
+   color: #cd7f32; /* Cor de bronze */
+    font-weight: bold;
+}
+/* Responsividade */
+@media (max-width: 600px) {
+    .rank-container {
+        width: 95%;
+    }
+
+    .rank-title {
+        font-size: 1.5rem;
+    }
+
+    .rank-table th, 
+    .rank-table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    .username {
+        font-size: 2rem;
+    }
+}
+
+/***************************/
 @media  screen and (max-width:1000px) {
     .header .logo{
         font-size: 1.8rem;

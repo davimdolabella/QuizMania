@@ -1,0 +1,35 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<div class="main container rank">
+    <h2 class="rank-title">Ranking</h2>
+    <div class="rank-container">
+        <table class="rank-table">
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Usuário</th>
+                    <th>Pontos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in profiles %}
+                <tr>
+                    <td class="{% if forloop.counter == 1 %}first-place{% elif forloop.counter == 2 %}second-place{% elif forloop.counter == 3 %}third-place{% endif %}">{{ profile.ranking }}</td>
+                    {% if user == profile.user %}
+                    <td class="current-user">{{ profile.user }}</td>
+                    <td class="current-user">{{ profile.points }}</td>
+                    {% else %}
+                    <td >{{ profile.user }}</td>
+                    <td>{{ profile.points }}</td>
+                    {% endif %}
+                    
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
+

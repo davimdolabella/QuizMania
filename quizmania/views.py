@@ -26,6 +26,7 @@ def save_in_profile(profile, quiz_session):
     profile.incorrect_questions += quiz_session.incorrect_answers
     profile.points += quiz_session.points
     profile.correct_questions_percentage = profile.calculate_correct_questions_percentage()
+    profile.incorrect_questions_percentage = 100 - profile.correct_questions_percentage
     profile.ranking = profile.get_rank_position()
     profile.save()
 
@@ -149,3 +150,23 @@ class Show_Result(LoginRequiredMixin, View):
             'incorrect_answers':f'{100 - correct_answers_percentage:.0f}%',
             'is_a_good_result':is_a_good_result,
         })
+    
+class UserProfile(LoginRequiredMixin, DetailView):
+    model = models.User
+    context_object_name = 'user'
+    template_name = 'quizmania/pages/profile.html'
+    login_url = LOGIN_URL
+    redirect_field_name = REDIRECT_FIELD_NAME
+    def get_object(self, queryset = None):
+        return self.request.user
+
+class Ranking(LoginRequiredMixin, ListView):
+    model = models.Profile
+    context_object_name = 'profiles'
+    template_name = 'quizmania/pages/ranking.html'
+    login_url = LOGIN_URL
+    redirect_field_name = REDIRECT_FIELD_NAME
+    def get_object(self, queryset = None):
+        return self.request.user.profile
+    def get_queryset(self):
+        return models.Profile.objects.all().order_by('-points')

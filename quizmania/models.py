@@ -68,9 +68,14 @@ class Profile(models.Model):
     correct_questions = models.IntegerField(default=0)
     incorrect_questions = models.IntegerField(default=0)
     correct_questions_percentage = models.DecimalField(
-        max_digits=5,
-        decimal_places=2,  
-        default=0.00 
+        max_digits=3,
+        decimal_places=0,  
+        default=0 
+    )
+    incorrect_questions_percentage = models.DecimalField(
+        max_digits=3,
+        decimal_places=0,  
+        default=0
     )
     points = models.IntegerField(default=0)
     ranking = models.PositiveIntegerField(blank=True, null=True)
