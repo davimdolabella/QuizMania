@@ -47,11 +47,7 @@ class QuizDetail(DetailView):
     model = models.Quiz
     context_object_name = 'quiz'
     template_name = 'quizmania/pages/quiz.html'
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            messages.info(self.request, "Entre em sua conta para jogar...")
-            return redirect(reverse('authors:login'))
-        return super().dispatch(request, *args, **kwargs)
+    
     def get_questions_by_difficulty(self, quiz, difficulty_id, limit):
         if not limit:
             return []
@@ -61,8 +57,6 @@ class QuizDetail(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         quiz = context.get('quiz')
-        quiz_session = get_quiz_session(self.request, quiz)
-        quiz_session.reset_session()
         questions_id =[] 
         questions_id.extend(
             self.get_questions_by_difficulty(quiz, difficulty_id=1, limit=quiz.qnt_easy_questions) +
@@ -70,8 +64,11 @@ class QuizDetail(DetailView):
             self.get_questions_by_difficulty(quiz, difficulty_id=3, limit=quiz.qnt_diff_questions)
         )
         question_id = questions_id[0]
-        quiz_session.questions_list = questions_id
-        quiz_session.save()
+        if self.request.user.is_authenticated:
+            quiz_session = get_quiz_session(self.request, quiz)
+            quiz_session.reset_session()
+            quiz_session.questions_list = questions_id
+            quiz_session.save()
         context.update({
             'easy_questions':quiz.qnt_easy_questions,
             'mid_questions':quiz.qnt_mid_questions,
@@ -80,12 +77,15 @@ class QuizDetail(DetailView):
         })
         return context
 
-class QuizCurrentQuestion(LoginRequiredMixin, DetailView):
+class QuizCurrentQuestion(DetailView):
     model = models.Question
     context_object_name = 'question'
     template_name = 'quizmania/pages/quiz.html'
-    login_url = LOGIN_URL
-    redirect_field_name = REDIRECT_FIELD_NAME
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            messages.info(self.request, "Entre em sua conta para jogar...")
+            return redirect(reverse('authors:login'))
+        return super().dispatch(request, *args, **kwargs)
     def get(self, request, *args, **kwargs):
         quiz_session = get_object_or_404(models.QuizSession, user=request.user)
         questions_id = quiz_session.questions_list
@@ -104,7 +104,8 @@ class QuizCurrentQuestion(LoginRequiredMixin, DetailView):
         question = context.get('question')
         context.update({
             'answers': question.answers.all().order_by('?'),
-            'question_img': cover_url
+            'question_img': cover_url,
+            'is_in_a_quiz':True,
         })
 
         return context
@@ -125,7 +126,8 @@ class Is_Correct(LoginRequiredMixin, View):
             'is_correct_page':True,
             'is_correct_answer': is_correct,
             'correct_answer': answer.question.answers.all().filter(is_correct=True).first(),
-            'next_question_id': next_question_id
+            'next_question_id': next_question_id,
+            'is_in_a_quiz':True,
         })
     
 class Show_Result(LoginRequiredMixin, View):
@@ -149,6 +151,7 @@ class Show_Result(LoginRequiredMixin, View):
             'correct_answers': f'{correct_answers_percentage:.0f}%',
             'incorrect_answers':f'{100 - correct_answers_percentage:.0f}%',
             'is_a_good_result':is_a_good_result,
+            'is_in_a_quiz':True,
         })
     
 class UserProfile(LoginRequiredMixin, DetailView):
@@ -160,12 +163,10 @@ class UserProfile(LoginRequiredMixin, DetailView):
     def get_object(self, queryset = None):
         return self.request.user
 
-class Ranking(LoginRequiredMixin, ListView):
+class Ranking(ListView):
     model = models.Profile
     context_object_name = 'profiles'
     template_name = 'quizmania/pages/ranking.html'
-    login_url = LOGIN_URL
-    redirect_field_name = REDIRECT_FIELD_NAME
     def get_object(self, queryset = None):
         return self.request.user.profile
     def get_queryset(self):

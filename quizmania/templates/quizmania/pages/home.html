@@ -1,7 +1,7 @@
 {% extends "global/base.html" %}
 {% block content %}
 <div class="main container">
-    <h2 class="want-play">O que deseja jogar?</h2>
+    <h2 class="want-play">O que deseja jogar{% if user.is_authenticated %}, {{user}}{% endif %}?</h2>
     <div class="quizes-container">
         <div class="quizes">
             {% for quiz in quizes %}

@@ -48,9 +48,10 @@
 html{
     font-size: 62.5%;
     color: var(--color-white);
-    background-color: var(--color-primary-dark-header);
-    
-    
+    background-color: var(--color-primary-dark-header); 
+}
+.none{
+    display: none !important;
 }
 .border{
     border-radius: 1rem;
@@ -79,6 +80,8 @@ h1,h2,h3,h4,h5,h6{
     display: flex;
     align-items: center;
     color: var(--color-white);
+    justify-content: space-between !important;
+    max-width: 120rem;
 }
 .header .logo{
     color: var(--color-white);
@@ -87,7 +90,102 @@ h1,h2,h3,h4,h5,h6{
     flex-wrap: nowrap;
     gap: .5rem;
     font-size: 2.4rem;
-    margin: 0 auto;
+}
+.header .header-buttons{
+    display: flex;
+    gap: 2rem;
+    position: relative;
+}
+.header .header-buttons .header-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    border: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    cursor: pointer;
+    transition: all .3s ease;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 50%;
+}
+.header-buttons a.header-button{
+    text-decoration: none;
+    background: rgb(161, 21, 21) !important;
+}
+.header form{
+    position: relative;
+}
+.header .header-buttons .header-button:hover{
+    transform: scale(1.05);
+}
+.confirmation-logout{
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background: rgb(248, 248, 248);
+    color: rgb(79, 73, 73);
+    width: max-content;
+    max-width: 30rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.confirmation-logout h2{
+    font-size: 1.8rem;
+    margin:1rem 0;
+    pointer-events: none;
+    font-weight: lighter;
+}
+.confirmation-logout .options{
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+.confirmation-logout .options div{
+    background-color: rgb(102, 103, 117);
+    width: fit-content;
+    padding: .5rem;
+    cursor: pointer;
+    border-radius:.5rem;
+    color: var(--color-white);
+}
+.confirmation-logout .options div.logout{
+    background-color: red;
+}
+.confirmation-logout .options div:hover{
+    background-color: rgb(60, 60, 61);
+}
+.menu-content{
+    position: absolute;
+    top: 100%;
+    right: 80%;
+    transform: translateX(50%);
+    background: var(--color-primary-dark-header);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: .5rem 0;
+}
+.menu-content a, .menu-content button{
+    width: 100%;
+    text-align: center;
+    border: none;
+    text-decoration: none;
+    padding: 1rem 3rem;
+    font-size: 1.5rem;
+    display: block;
+    background: transparent;
+    color: var(--color-white);
+    cursor: pointer;
+}
+.menu-content a:hover{
+    background-color: var(--color-primary-dark);
+}
+.menu-content button:hover{
+    background-color: rgb(128, 22, 22);
+    transform: none;
+    border: none;
 }
 /*main*/
 .main{
@@ -933,6 +1031,17 @@ h1,h2,h3,h4,h5,h6{
         gap: .5rem;
     }
     .main{
-        padding: 0;
+        padding: 3rem 1rem;
+    }
+    .confirmation-logout{
+        width: 19rem;
+    }
+    .confirmation-logout h2{
+        font-size: 1.2rem;
+        margin:.5rem 0;
+        margin-bottom: 2rem;
+    }
+    .confirmation-logout .options div{
+        font-size: 1.1rem;
     }
 }
