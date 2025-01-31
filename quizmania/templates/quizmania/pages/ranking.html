@@ -13,7 +13,8 @@
                 </tr>
             </thead>
             <tbody>
-                {% for profile in profiles %}
+                {% for profile in profiles|slice:":8" %}
+                {% if profile.ranking %}
                 <tr>
                     <td class="{% if forloop.counter == 1 %}first-place{% elif forloop.counter == 2 %}second-place{% elif forloop.counter == 3 %}third-place{% endif %}">{{ profile.ranking }}</td>
                     {% if user == profile.user %}
@@ -23,9 +24,9 @@
                     <td >{{ profile.user }}</td>
                     <td>{{ profile.points }}</td>
                     {% endif %}
-                    
-                    
                 </tr>
+                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
