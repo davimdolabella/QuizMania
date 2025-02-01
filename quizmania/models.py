@@ -14,7 +14,7 @@ class Difficulty(models.Model):
 
 class Quiz(models.Model):
     def __str__(self):
-        return f"{self.title}({self.category})"
+        return f"{self.title}({self.category})({self.difficulty})"
     title = models.CharField(max_length=20)
     description = models.TextField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,7 +104,7 @@ class QuizSession(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     current_quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
-    current_question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True)
+    current_question_id = models.IntegerField(default=None, blank=True, null=True)
     questions_list = models.JSONField(default=list, blank=True)
     answers = models.JSONField(default=list, blank=True)
     points = models.IntegerField(default=0)

@@ -5,7 +5,12 @@
         <h2 class="question-title">{{ question.question  }}</h2>
         <div class="answer-container">
             {% for answer in answers %}
-                <a class="answer" href="{% url 'quizmania:is_correct' answer.pk %}">{{answer.answer}}</a>
+                <form action="{% url 'quizmania:is_correct' answer.pk %}" method="POST" class="answer">
+                    {% csrf_token %}
+                    <button type="submit" >
+                        {{answer.answer}}
+                    </button>
+                </form>
             {% endfor %}
         </div>
     </div>

@@ -18,10 +18,18 @@ ALLOWED_HOSTS = [
     '2095-177-47-168-165.ngrok-free.app',
     'efd9-177-47-168-165.ngrok-free.app',
     '0870-177-47-168-165.ngrok-free.app',
-    'adac-177-47-168-165.ngrok-free.app',
+    'c065-177-47-168-165.ngrok-free.app',
+    '604c-177-47-168-165.ngrok-free.app',
     '127.0.0.1'
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://604c-177-47-168-165.ngrok-free.app",
+]
 
+# Se estiver usando CORS, configure-o
+CORS_ALLOWED_ORIGINS = [
+    "https://604c-177-47-168-165.ngrok-free.app",
+]
 
 # Application definition
 

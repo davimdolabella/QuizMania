@@ -10,7 +10,10 @@
         {% if next_question_id %}
             <a class="continue" href="{% url 'quizmania:question' next_question_id %}">Continuar</a>
         {% else %}
-            <a class="continue" href="{% url 'quizmania:show_result' %}">Finalizar</a>
+            <form action="{% url 'quizmania:show_result' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="continue">Finalizar</button>
+            </form>
         {% endif %}
         
     </div>

@@ -33,15 +33,14 @@ def save_in_profile(profile, quiz_session):
 class QuizListViewBase(ListView):
     model = models.Quiz
     context_object_name = 'quizes'
-    ordering = ['difficulty']
+    ordering = ['category','difficulty']
     template_name = ''
     paginate_by = None
     
 
 class HomeQuizListViewBase(QuizListViewBase):
     template_name = 'quizmania/pages/home.html'
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    
 
 class QuizDetail(DetailView):
     model = models.Quiz
@@ -68,7 +67,9 @@ class QuizDetail(DetailView):
             quiz_session = get_quiz_session(self.request, quiz)
             quiz_session.reset_session()
             quiz_session.questions_list = questions_id
+            quiz_session.current_question = question_id
             quiz_session.save()
+
         context.update({
             'easy_questions':quiz.qnt_easy_questions,
             'mid_questions':quiz.qnt_mid_questions,
@@ -86,17 +87,6 @@ class QuizCurrentQuestion(DetailView):
             messages.info(self.request, "Entre em sua conta para jogar...")
             return redirect(reverse('authors:login'))
         return super().dispatch(request, *args, **kwargs)
-    def get(self, request, *args, **kwargs):
-        quiz_session = get_object_or_404(models.QuizSession, user=request.user)
-        questions_id = quiz_session.questions_list
-        if not questions_id:
-            return redirect(reverse('quizmania:show_result'))
-        questions_id.pop(0)
-        quiz_session.questions_list = questions_id
-        quiz_session.save()
-        
-        
-        return super().get(request, *args, **kwargs)
     def get_context_data(self, *args, **kwargs):
         session_quiz = get_object_or_404(models.QuizSession, user=self.request.user)
         cover_url = session_quiz.current_quiz.cover.url
@@ -113,15 +103,26 @@ class QuizCurrentQuestion(DetailView):
 class Is_Correct(LoginRequiredMixin, View):
     login_url = LOGIN_URL
     redirect_field_name = REDIRECT_FIELD_NAME
-    def get(self, request, pk):
+    def post(self, request, pk):
         quiz_session = get_object_or_404(models.QuizSession, user=request.user)
-        answers = quiz_session.answers if quiz_session.answers else []
+        questions_id = quiz_session.questions_list
+        if not questions_id:
+            return redirect(reverse('quizmania:home'))
+        questions_id.pop(0)
         answer = get_object_or_404(models.Answer, pk=pk)
         is_correct = answer.is_correct
+        quiz_session.questions_list = questions_id
+        answers = quiz_session.answers if quiz_session.answers else []
         answers.append({'is_correct':is_correct, 'difficulty':answer.question.difficulty.name})
         quiz_session.answers = answers
-        next_question_id = quiz_session.questions_list[0] if quiz_session.questions_list else None
         quiz_session.save()
+        return redirect(reverse('quizmania:is_correct', kwargs={'pk': pk}))
+    
+    def get(self, request, pk):
+        quiz_session = get_object_or_404(models.QuizSession, user=request.user)
+        answer = get_object_or_404(models.Answer, pk=pk)
+        is_correct = answer.is_correct
+        next_question_id = quiz_session.questions_list[0] if quiz_session.questions_list else None
         return render(request, 'quizmania/pages/quiz.html',{
             'is_correct_page':True,
             'is_correct_answer': is_correct,
@@ -133,18 +134,18 @@ class Is_Correct(LoginRequiredMixin, View):
 class Show_Result(LoginRequiredMixin, View):
     login_url = LOGIN_URL
     redirect_field_name = REDIRECT_FIELD_NAME
-    def get(self, request):
+    def post(self, request):
         quiz_session = get_object_or_404(models.QuizSession, user=request.user)
         quiz_session.get_points()
         quiz_session.calculate_correct_answers_percentage()
+        profile = get_user_profile(request)
+        save_in_profile(profile, quiz_session)
+        return redirect(reverse('quizmania:show_result'))
+    def get(self, request):
+        quiz_session = get_object_or_404(models.QuizSession, user=request.user)
         quiz_points = quiz_session.points
         correct_answers_percentage = quiz_session.correct_answers_percentage
         is_a_good_result = quiz_session.is_a_good_result
-
-        profile = get_user_profile(request)
-        save_in_profile(profile, quiz_session)
-
-        quiz_session.reset_session()
         return render(request, 'quizmania/pages/quiz.html',{
             'is_result_page':True,
             'quiz_points':quiz_points,
